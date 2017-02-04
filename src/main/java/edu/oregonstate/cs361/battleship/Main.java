@@ -50,6 +50,7 @@ public class Main {
         String body = req.body();
         System.out.println(body);
         BattleshipModel model = getModelFromReq(req);
+        int x;
 
         String url = req.url();
         System.out.println(url);
@@ -63,12 +64,42 @@ public class Main {
         System.out.println("About to call model method!");
         model.placeShip(arg1, arg2, arg3, arg4);
 
+        x = 1;
+        int[] coords = new int[] {0, 0};
+
+        while(x == 1) {
+            coords[0] = (int)(Math.random() * 10) + 1;
+            coords[1] = (int)(Math.random() * 10) + 1;
+
+            if (Math.round(Math.random()) == 1){
+                x = model.placeShip("computer_" + arg1, coords[0], coords[1], "horizontal");
+            } else {
+                x = model.placeShip("computer_" + arg1, coords[0], coords[1], "vertical");
+            }
+
+            System.out.println(x);
+            System.out.println(sendModel(model));
+        }
+
         return sendModel(model);
     }
 
     //Similar to placeShip, but with firing.
     private static String fireAt(Request req) {
         BattleshipModel model = getModelFromReq(req);
+
+        String url = req.url();
+        System.out.println(url);
+        int index = url.indexOf("fire/") + 5;
+        url = url.substring(index);
+        String[] parts = url.split("/");
+        int across = Integer.parseInt(parts[0]);
+        int down = Integer.parseInt(parts[1]);
+
+        model.fireAt(across, down);
+        model.cpuFireAt();
+
+        System.out.println(sendModel(model));
 
         return sendModel(model);
     }

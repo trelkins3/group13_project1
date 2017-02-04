@@ -4,33 +4,29 @@ package edu.oregonstate.cs361.battleship;
  * Created by Christopher on 1/31/2017.
  */
 public class Shot {
-    private Point loc;
+    private int Across;
+    private int Down;
 
     public Shot(Point p) {
-        loc = p;
-        validate();
+        Across = p.getAcross();
+        Down = p.getDown();
     }
 
-    private void validate() {
-        if(loc == null) {
-            throw new RuntimeException("The given point for a shot cannot be null!");
-        }
-    }
-
-    public Shot(int across, int down) {
-        this(new Point(across, down));
+    public Shot(int Across, int Down) {
+        this(new Point(Across, Down));
     }
 
     public Point getLoc() {
-        return loc;
+        return new Point(Across, Down);
     }
 
-    public int getAcross() {
-        return loc.getAcross();
-    }
-
-    public int getDown() {
-        return loc.getDown();
+    @Override
+    public boolean equals(Object other) {
+        if(!(other instanceof Shot)) {
+            return false;
+        }
+       Shot cast = (Shot) other;
+        return Across == cast.Across && Down == cast.Down;
     }
 
 }
